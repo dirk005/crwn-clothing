@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
@@ -15,13 +15,10 @@ import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 import { setCurrentUser } from "./redux/user/user.actions";
 import { selectCurrentUser } from "./redux/user/user.selector";
 
-class App extends Component {
-  unsubscribeFromAuth = null;
-
-  componentDidMount() {
-    const { setCurrentUser } = this.props;
-
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+const App  = ({ setCurrentUser,currentUser }) => {
+ 
+  useEffect(() => {
+   const  unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
         userRef.onSnapshot((snapShot) => {
@@ -34,13 +31,14 @@ class App extends Component {
         setCurrentUser(userAuth);
       }
     });
-  }
 
-  componentWillUnmount() {
-    this.unsubscribeFromAuth();
-  }
+    return () => {
+     unsubscribeFromAuth();
+    }
+  
+  }, [setCurrentUser])
 
-  render() {
+ 
     return (
       <div>
         <Header />
@@ -52,7 +50,7 @@ class App extends Component {
             exact
             path="/signin"
             render={() =>
-              this.props.currentUser ? (
+              currentUser ? (
                 <Redirect to="/" />
               ) : (
                 <SignInAndSignUpPage />
@@ -63,7 +61,7 @@ class App extends Component {
       </div>
     );
   }
-}
+
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
