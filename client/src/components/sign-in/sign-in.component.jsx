@@ -5,8 +5,6 @@ import "./sign-in.style.scss";
 import FormInput from "../form-input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
 
-// import { auth, signInWithGoogle } from "../../firebase/firebase.utils";
-
 import {
   googleSignInStart,
   emailSignInStart,
@@ -22,12 +20,6 @@ const SignIn = ({ isGoogleSignIn, googleSignInStart, emailSignInStart }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     emailSignInStart(email, password);
-    // try {
-    //   await auth.signInWithEmailAndPassword(email, password);
-    //   setCredentials({ email: "", password: "" });
-    // } catch (error) {
-    //   console.error(error);
-    // }
   };
 
   const handleChange = (event) => {
