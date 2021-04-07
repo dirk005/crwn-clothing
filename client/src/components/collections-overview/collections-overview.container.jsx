@@ -1,19 +1,18 @@
-import { connect } from "react-redux";
-import { compose } from "redux";
-import { createStructuredSelector } from "reselect";
-import { selectCollectionFetching } from "../../redux/shop/shop.selector";
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { compose } from 'redux';
 
-import WithSpinner from "../../components/with-spinner/with-spinner.component";
-
-import CollectionOverview from "../../components/collections-overview/collections-overview.component";
+import { selectIsCollectionFetching } from '../../redux/shop/shop.selectors';
+import WithSpinner from '../with-spinner/with-spinner.component';
+import CollectionsOverview from './collections-overview.component';
 
 const mapStateToProps = createStructuredSelector({
-  isLoading: selectCollectionFetching,
+  isLoading: selectIsCollectionFetching
 });
 
 const CollectionsOverviewContainer = compose(
   connect(mapStateToProps),
   WithSpinner
-)(CollectionOverview);
+)(CollectionsOverview);
 
 export default CollectionsOverviewContainer;
